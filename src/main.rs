@@ -1,4 +1,20 @@
-use raylib::prelude::*;
+use raylib::{ffi::GetRenderWidth, prelude::*};
+use std::sync::Mutex;
+
+static GLOBAL_FRAMES: Mutex<[u32; 1024]> = Mutex::new([0; 1024]);
+static GLOBAL_FRAMES_COUNT: Mutex<usize> = Mutex::new(0);
+
+fn callback(buffer_data: &[u32], mut frames: usize) {
+    if frames > 1024 {
+        frames = 1024;
+    }
+
+    let mut global_frames = GLOBAL_FRAMES.lock().unwrap();
+    let mut count = GLOBAL_FRAMES_COUNT.lock().unwrap();
+
+    global_frames[..frames].copy_from_slice(&buffer_data[..frames]);
+    *count = frames;
+}
 
 fn main() {
     let (mut rl, thread) = raylib::init()
@@ -26,9 +42,11 @@ fn main() {
                 music.play_stream();
             }
         }
+
         let mut d = rl.begin_drawing(&thread);
         d.clear_background(Color::BLACK);
         d.draw_circle_gradient(320, 200, 220.5, Color::DARKRED, Color::BLACK);
+
         d.draw_text("Press SPACE to toggle music!", 170, 200, 20, Color::WHITE);
     }
 }
