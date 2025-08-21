@@ -48,5 +48,6 @@ fn main() {
         d.draw_circle_gradient(320, 200, 220.5, Color::DARKRED, Color::BLACK);
 
         d.draw_text("Press SPACE to toggle music!", 170, 200, 20, Color::WHITE);
+        d.draw_ellipse(321, 200, 120.0, 60.0, Color::WHITE);
     }
 }
