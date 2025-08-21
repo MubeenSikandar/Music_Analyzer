@@ -9,7 +9,7 @@ fn main() {
     let ready: bool = audio_device.is_audio_device_ready();
 
     let music = audio_device
-        .new_music("resources/Vivo.mp3")
+        .new_music("resources/Mild High Club - Homage.mp3")
         .expect("Failed to Load Music");
 
     music.play_stream();
